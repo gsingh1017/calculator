@@ -1,5 +1,8 @@
 /* Stylesheet */
 
+body {
+    margin: 0;
+}
 
 button {
     border: 1px solid black;
@@ -11,6 +14,8 @@ button {
 #container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 #buttonContainer {
@@ -31,7 +36,7 @@ button {
     height: 350px;
 }
 
-.display {
+#display {
     align-content: end;
     height: 75px;
     margin: 20px 10px;
