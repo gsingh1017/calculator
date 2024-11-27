@@ -1,0 +1,57 @@
+/* Stylesheet */
+
+
+button {
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 17px;
+    color: white;
+}
+
+#container {
+    display: flex;
+    justify-content: center;
+}
+
+#buttonContainer {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 10px;
+    margin: 0 10px 20px 10px;
+}
+
+#calculator {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    border-radius: 20px;
+    width: 500px;
+    height: 350px;
+}
+
+.display {
+    align-content: end;
+    height: 75px;
+    margin: 20px 10px;
+    padding-right: 10px;
+    border: 1px rgb(130, 130, 130) solid;
+    border-radius: 20px;
+    text-align: right;
+    font-size: 45px;
+    color: white;
+}
+
+.main {
+    background-color: rgb(80, 80, 80);
+}
+
+.operators {
+    background-color: rgb(130, 130, 130);
+}
+
+#equalSign {
+    background-color:aquamarine;
+    color: black;
+}
