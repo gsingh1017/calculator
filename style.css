@@ -41,7 +41,7 @@ button {
     height: 75px;
     margin: 20px 10px;
     padding-right: 10px;
-    border: 1px rgb(130, 130, 130) solid;
+    border: 1px rgb(127, 255, 212) solid;
     border-radius: 20px;
     text-align: right;
     font-size: 45px;
@@ -49,14 +49,14 @@ button {
 }
 
 .main {
-    background-color: rgb(80, 80, 80);
+    background-color: rgb(70, 70, 70);
 }
 
 .operators {
-    background-color: rgb(130, 130, 130);
+    background-color: rgb(125, 125, 125);
 }
 
 #equalSign {
-    background-color:aquamarine;
+    background-color: rgb(127, 255, 212);
     color: black;
 }
