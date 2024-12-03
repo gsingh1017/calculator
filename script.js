@@ -6,29 +6,34 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
-const display = document.querySelector("#display");
-const buttons = document.querySelectorAll("button");
+const numberButtons = document.querySelectorAll(".main");
+const operatorButtons = document.querySelectorAll(".operator");
 
+const display = document.querySelector("#display");
 const equalSign = document.querySelector("#equalSign");
-const clear = document.querySelector(`button[value = "clear"]`);
+const clear = document.querySelector("#clear");
+const backspace = document.querySelector("#back");
+
 
 // Initializer
-let a = "";
-let b = "";
-let operator = "";
-let total = 0;
+let str = "";
+let operatorIndex = 0;
+let a = null;
+let b = null;
+let tempArr = null;
 
 
 function resetCalculator() {
-    a = "";
-    b = "";
-    operator = "";
-    total = 0;
+    str = "";
+    operatorIndex = 0;
+    a = null;
+    b = null;
+    tempArr = null;
     display.textContent = "0";
 }
 
 
-function operate(a, operator, b) {
+function operate(a, b, operator) {
     if (operator === "+") {
         return add(a,b);
     }
@@ -47,50 +52,102 @@ function operate(a, operator, b) {
 }
 
 
-// Feedback when mouse interacts with buttons
-function buttonInterface() {
+// Display border changes when buttons are pressed
+function displayInterface() {
 
-    buttons.forEach((element) => {
-
-        element.addEventListener("mouseenter", () => {
-            element.style.opacity = 0.9;
-        });
-    
-        element.addEventListener("mouseleave", () => {
-            element.style.opacity = 1;
-        });
-    
+    numberButtons.forEach((element) => {
         element.addEventListener("mousedown", () => {
-            element.style.opacity = 0.9;
             display.style.border = "1px rgb(130, 130, 130) solid";
         });
     
         element.addEventListener("mouseup", () => {
-            element.style.opacity = 1;
+            display.style.border = "1px rgb(127, 255, 212) solid";
+        });
+    });
+
+    operatorButtons.forEach((element) => {
+        element.addEventListener("mousedown", () => {
+            display.style.border = "1px rgb(130, 130, 130) solid";
+        });
+    
+        element.addEventListener("mouseup", () => {
             display.style.border = "1px rgb(127, 255, 212) solid";
         });
     });
 }
 
 
-buttons.forEach((element) => {
+// Takes str and splits into an array
+// Operator equals string value at operatorIndex
+// variable a equals array left of operatorIndex, joined into string and converted to Number
+// variable b equals array right of operatorIndex, joined into string and converted to Number
+// Operate will be called and result will be converted to string and assigned to str
+// Display updated with str
+function handleOperation() {
+
+    let tempArr = str.split("");
+
+    operator = tempArr[operatorIndex];
+    a = Number(tempArr.slice(0, operatorIndex).join(""));
+    b = Number(tempArr.slice((operatorIndex + 1), tempArr.length).join(""));
+
+    /*
+    console.log("tempArr = " + tempArr);
+    console.log("operator = " + operator);
+    console.log("a = " + a);
+    console.log("b = " + b);
+    */
+
+    str = String(operate(a, b, operator));
+    display.textContent = str;
+}
+
+
+numberButtons.forEach((element) => {
     element.addEventListener("click", () => {
-        a = a + element.textContent; 
-        display.textContent = a;  
-        console.log(a); 
+        str += element.textContent; 
+        display.textContent = str;
+
+        console.log(str);
     });
 });
 
 
-equalSign.addEventListener("click", () => {
-    total = operate(a, operator, b);
-    display.textContent = String(total);
+operatorButtons.forEach((element) => {
+    element.addEventListener("click", () => {
+        str += element.textContent;
+        display.textContent = str;
+
+        operatorIndex = str.length - 1;
+
+        console.log("operatorIndex = " + operatorIndex);
+    });
 });
 
 
-// resetCalculator called when "AC" is clicked
+// handleOperation() called when "=" is clicked
+equalSign.addEventListener("click", () => {
+    handleOperation();
+});
+
+
+// resetCalculator() called when "AC" is clicked
 clear.addEventListener("click", () => {
     resetCalculator();
 });
 
-buttonInterface();
+
+// remove last string character
+// if string is empty or last string character is 0, 0 will display
+backspace.addEventListener("click", () => {
+    str = str.slice(0, -1);
+
+    if (str === "" || display.textContent === "0") {
+        display.textContent = "0";
+    } else {
+        display.textContent = str;
+    }
+});
+
+
+displayInterface();
