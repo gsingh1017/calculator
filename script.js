@@ -6,6 +6,8 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
+const buttons = document.querySelectorAll("button");
+
 const numberButtons = document.querySelectorAll(".main");
 const operatorButtons = document.querySelectorAll(".operator");
 
@@ -55,17 +57,7 @@ function operate(a, b, operator) {
 // Display border changes when buttons are pressed
 function displayInterface() {
 
-    numberButtons.forEach((element) => {
-        element.addEventListener("mousedown", () => {
-            display.style.border = "1px rgb(130, 130, 130) solid";
-        });
-    
-        element.addEventListener("mouseup", () => {
-            display.style.border = "1px rgb(127, 255, 212) solid";
-        });
-    });
-
-    operatorButtons.forEach((element) => {
+    buttons.forEach((element) => {
         element.addEventListener("mousedown", () => {
             display.style.border = "1px rgb(130, 130, 130) solid";
         });
@@ -83,6 +75,7 @@ function displayInterface() {
 // variable b equals array right of operatorIndex, joined into string and converted to Number
 // Operate will be called and result will be converted to string and assigned to str
 // Display updated with str
+// operatorIndex reset to 0
 function handleOperation() {
 
     let tempArr = str.split("");
@@ -100,6 +93,7 @@ function handleOperation() {
 
     str = String(operate(a, b, operator));
     display.textContent = str;
+    operatorIndex = 0;
 }
 
 
@@ -115,6 +109,12 @@ numberButtons.forEach((element) => {
 
 operatorButtons.forEach((element) => {
     element.addEventListener("click", () => {
+
+        // call handleOperation() if an operator is already present in str
+        if (operatorIndex != 0) {
+            handleOperation();
+        }
+
         str += element.textContent;
         display.textContent = str;
 
@@ -140,6 +140,12 @@ clear.addEventListener("click", () => {
 // remove last string character
 // if string is empty or last string character is 0, 0 will display
 backspace.addEventListener("click", () => {
+    
+    // edge case; reset operatorIndex if backspace removes an operator
+    if (str.charAt(str.length-1) === "÷" || "-" || "+" || "×") {
+        operatorIndex = 0;
+    }
+    
     str = str.slice(0, -1);
 
     if (str === "" || display.textContent === "0") {
