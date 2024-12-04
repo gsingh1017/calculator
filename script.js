@@ -128,17 +128,22 @@ function handleButtons() {
         element.addEventListener("click", () => {
     
             // call handleOperation() if an operator is already present in str
-            if (operatorIndex != 0) {
-                handleOperation();
+            // and operator is not last character in str
+            // else add operator to str and store index of operator
+            if (operatorIndex !== 0) {
+                if ((str.length - 1) !== operatorIndex) {
+                    handleOperation();
+                }
+
+            } else {
+                str += element.textContent;
+                display.textContent = str;
+
+                // stores index of operator
+                operatorIndex = str.length - 1;
+
+                console.log("operatorIndex = " + operatorIndex);
             }
-    
-            str += element.textContent;
-            display.textContent = str;
-    
-            // stores index of operator
-            operatorIndex = str.length - 1;
-    
-            console.log("operatorIndex = " + operatorIndex);
         });
     });
     
@@ -159,7 +164,7 @@ function handleButtons() {
     // if string is empty or last string character is 0, 0 will display
     backspace.addEventListener("click", () => {
         
-        // edge case; reset operatorIndex if backspace removes an operator
+        // reset operatorIndex if backspace removes an operator
         if (str.charAt(str.length-1) === "÷" || "-" || "+" || "×") {
             operatorIndex = 0;
         }
