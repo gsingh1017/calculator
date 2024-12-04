@@ -97,7 +97,7 @@ function handleDisplay() {
 // Operator equals string value at operatorIndex
 // variable a equals array left of operatorIndex, joined into string and converted to Number
 // variable b equals array right of operatorIndex, joined into string and converted to Number
-// Operate called; converted to string and assigned to str; rounded to 4th decimal if needed
+// Operate called; converted to string and assigned to str; rounded to 5th decimal if needed
 // Display updated with str
 // operatorIndex reset to 0
 function handleOperation() {
@@ -110,9 +110,9 @@ function handleOperation() {
 
     str = String(operate(a, b, operator));
 
-    // fix
-    if (str.length > 10) {
-        str = parseFloat(str).toFixed(4)
+    // rounds to 5th decimal if operate returns a decimal number
+    if (str.indexOf(".") !== -1) {
+        str = parseFloat(str).toFixed(5)
     }
 
     handleDisplay();
