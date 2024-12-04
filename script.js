@@ -5,7 +5,7 @@ const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => {
-    if (a === 0 || b == 0) {
+    if (a === 0 || b === 0) {
         return 0; 
     }
     return a / b;
@@ -107,92 +107,139 @@ function handleOperation() {
 }
 
 
-numberButtons.forEach((element) => {
-    element.addEventListener("click", () => {
-        str += element.textContent; 
-        display.textContent = str;
+// contains all button event listeners
+function handleButtons() {
 
-        console.log(str);
+    // handle numbers & "." 
+    numberButtons.forEach((element) => {
+        element.addEventListener("click", () => {
+            str += element.textContent; 
+            display.textContent = str;
+    
+            console.log(str);
+        });
     });
-});
-
-
-operatorButtons.forEach((element) => {
-    element.addEventListener("click", () => {
-
-        // call handleOperation() if an operator is already present in str
-        if (operatorIndex != 0) {
-            handleOperation();
+    
+    
+    // handle all operators 
+    operatorButtons.forEach((element) => {
+        element.addEventListener("click", () => {
+    
+            // call handleOperation() if an operator is already present in str
+            if (operatorIndex != 0) {
+                handleOperation();
+            }
+    
+            str += element.textContent;
+            display.textContent = str;
+    
+            // stores index of operator
+            operatorIndex = str.length - 1;
+    
+            console.log("operatorIndex = " + operatorIndex);
+        });
+    });
+    
+    
+    // handleOperation() called when "=" is clicked
+    equalSign.addEventListener("click", () => {
+        handleOperation();
+    });
+    
+    
+    // resetCalculator() called when "AC" is clicked
+    clear.addEventListener("click", () => {
+        resetCalculator();
+    });
+    
+    
+    // remove last string character
+    // if string is empty or last string character is 0, 0 will display
+    backspace.addEventListener("click", () => {
+        
+        // edge case; reset operatorIndex if backspace removes an operator
+        if (str.charAt(str.length-1) === "÷" || "-" || "+" || "×") {
+            operatorIndex = 0;
         }
-
-        str += element.textContent;
-        display.textContent = str;
-
-        // stores index of operator
-        operatorIndex = str.length - 1;
-
-        console.log("operatorIndex = " + operatorIndex);
+        
+        str = str.slice(0, -1);
+    
+        if (str === "" || display.textContent === "0") {
+            display.textContent = "0";
+        } else {
+            display.textContent = str;
+        }
     });
-});
-
-
-// handleOperation() called when "=" is clicked
-equalSign.addEventListener("click", () => {
-    handleOperation();
-});
-
-
-// resetCalculator() called when "AC" is clicked
-clear.addEventListener("click", () => {
-    resetCalculator();
-});
-
-
-// remove last string character
-// if string is empty or last string character is 0, 0 will display
-backspace.addEventListener("click", () => {
     
-    // edge case; reset operatorIndex if backspace removes an operator
-    if (str.charAt(str.length-1) === "÷" || "-" || "+" || "×") {
-        operatorIndex = 0;
-    }
     
-    str = str.slice(0, -1);
+    // if an operator is not present, percentage is calculated normally
+    // else if operator is present, tempStr will get str characters from operator to end of string length
+    // tempStr will store new percentage string 
+    // str will be sliced to remove all characters after operator and replace with tempStr
+    percentage.addEventListener("click", () => {
+    
+        if (operatorIndex === 0) {
+            
+            str = String(Number(str / 100));
+            display.textContent = str;
 
-    if (str === "" || display.textContent === "0") {
-        display.textContent = "0";
-    } else {
-        display.textContent = str;
-    }
-});
+        } else {
+    
+            tempStr = str
+                        .split("")
+                        .splice((operatorIndex + 1), (str.length - 1))
+                        .join("");
+    
+            tempStr = String(Number(tempStr/ 100));
+    
+            str = str.slice(0, (operatorIndex + 1));
+    
+            str += tempStr;
+            display.textContent = str;
+        }
+    });
 
+    
+    // if operator is not present
+    // and if "-" is not in the first index, then "-" is added to first index of str
+    // else "-" is removed from first index
+    // if operator is present
+    // and if "-" is not in index after operator, then "-" is added 
+    // else "-" is removed from index after operator
+    plusOrMinus.addEventListener("click", () => {
 
-// if an operator is present, tempStr will get str characters from operator to end of string length
-// tempStr will store new percentage string 
-// str will be sliced to remove all characters after operator and replace with tempStr
-// else percentage is calculated normally
-percentage.addEventListener("click", () => {
+        if (operatorIndex === 0) {
+            if (str.charAt(0) !== "-") {
+                str = str.split("");
+                str = ["-", ...str];
+                str = str.join("");
+                display.textContent = str;
 
-    if (operatorIndex != 0) {
+            } else {
+                str = str.substring(1, str.length);
+                display.textContent = str;
 
-        tempStr = str
-                    .split("")
-                    .splice((operatorIndex + 1), (str.length - 1))
-                    .join("");
+            }
 
-        tempStr = String(Number(tempStr/ 100));
+        } else {
+            if (str.charAt(operatorIndex + 1) !== "-") {
+                str = str.split("");
+                str = str.toSpliced((operatorIndex + 1), 0, "-");
+                str = str.join("");
+                display.textContent = str; 
 
-        str = str.slice(0, (operatorIndex + 1));
+            } else {
+                str = str.split("");
+                str = str.toSpliced((operatorIndex + 1), 1);
+                str = str.join("");
+                display.textContent = str; 
+            }
+        }
+    });
 
-        str += tempStr;
-        display.textContent = str;
-    } else {
-
-        str = String(Number(str / 100));
-        display.textContent = str;
-    }
-});
+}
 
 
 
 displayInterface();
+handleButtons();
