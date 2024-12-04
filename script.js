@@ -141,27 +141,26 @@ function handleButtons() {
     });
     
     
-    // handle all operators 
+    // handle operator buttons
+    // add operator to str and store index of operator
     operatorButtons.forEach((element) => {
         element.addEventListener("click", () => {
     
             // call handleOperation() if an operator is already present in str
             // and operator is not last character in str
-            // else add operator to str and store index of operator
             if (operatorIndex !== 0) {
                 if ((str.length - 1) !== operatorIndex) {
                     handleOperation();
                 }
+            } 
 
-            } else {
-                str += element.textContent;
-                handleDisplay();
+            str += element.textContent;
+            handleDisplay();
 
-                // stores index of operator
-                operatorIndex = str.length - 1;
+            // stores index of operator
+            operatorIndex = str.length - 1;
 
-                console.log("operatorIndex = " + operatorIndex);
-            }
+            console.log("operatorIndex = " + operatorIndex);
         });
     });
     
