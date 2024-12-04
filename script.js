@@ -65,7 +65,8 @@ function operate(a, b, operator) {
 
 
 // Display border changes when buttons are pressed
-function displayInterface() {
+// Display text content changes
+function handleDisplay() {
 
     buttons.forEach((element) => {
         element.addEventListener("mousedown", () => {
@@ -76,6 +77,19 @@ function displayInterface() {
             display.style.border = "1px rgb(127, 255, 212) solid";
         });
     });
+
+
+    // condition limits display characters to 20
+    if ((str.length > 20) === true) {
+        display.textContent = str.substring(0, 20);
+      
+    // checks if str is empty
+    } else if (str === "") {
+        display.textContent = "0";
+     
+    } else {
+        display.textContent = str;
+    }
 }
 
 
@@ -107,7 +121,7 @@ function handleOperation() {
         str = parseFloat(str).toFixed(10)
     }
 
-    display.textContent = str;
+    handleDisplay();
     operatorIndex = 0;
 }
 
@@ -120,7 +134,7 @@ function handleButtons() {
         element.addEventListener("click", () => {
             
             str += element.textContent; 
-            display.textContent = str;
+            handleDisplay();
 
             console.log(str);
         });
@@ -141,7 +155,7 @@ function handleButtons() {
 
             } else {
                 str += element.textContent;
-                display.textContent = str;
+                handleDisplay();
 
                 // stores index of operator
                 operatorIndex = str.length - 1;
@@ -174,12 +188,7 @@ function handleButtons() {
         }
         
         str = str.slice(0, -1);
-    
-        if (str === "" || display.textContent === "0") {
-            display.textContent = "0";
-        } else {
-            display.textContent = str;
-        }
+        handleDisplay();
     });
     
     
@@ -192,7 +201,6 @@ function handleButtons() {
         if (operatorIndex === 0) {
             
             str = String(Number(str / 100));
-            display.textContent = str;
 
         } else {
     
@@ -206,8 +214,9 @@ function handleButtons() {
             str = str.slice(0, (operatorIndex + 1));
     
             str += tempStr;
-            display.textContent = str;
         }
+
+        handleDisplay();
     });
 
     
@@ -224,11 +233,9 @@ function handleButtons() {
                 str = str.split("");
                 str = ["-", ...str];
                 str = str.join("");
-                display.textContent = str;
 
             } else {
                 str = str.substring(1, str.length);
-                display.textContent = str;
 
             }
 
@@ -237,15 +244,15 @@ function handleButtons() {
                 str = str.split("");
                 str = str.toSpliced((operatorIndex + 1), 0, "-");
                 str = str.join("");
-                display.textContent = str; 
 
             } else {
                 str = str.split("");
                 str = str.toSpliced((operatorIndex + 1), 1);
-                str = str.join("");
-                display.textContent = str; 
+                str = str.join(""); 
             }
         }
+
+        handleDisplay();
     });
 
 
@@ -258,20 +265,18 @@ function handleButtons() {
         if (operatorIndex === 0) {
             if (str.indexOf(".") === -1) {
                 str = str + ".";
-                display.textContent = str;
             }
 
         } else {
             tempStr = str.slice(operatorIndex, (str.length - 1));
             if (tempStr.indexOf(".") === -1) {
                 str = str + ".";
-                display.textContent = str;
             }
         }
+
+        handleDisplay();
     });
 }
 
 
-
-displayInterface();
 handleButtons();
