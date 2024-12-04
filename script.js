@@ -97,7 +97,7 @@ function handleDisplay() {
 // Operator equals string value at operatorIndex
 // variable a equals array left of operatorIndex, joined into string and converted to Number
 // variable b equals array right of operatorIndex, joined into string and converted to Number
-// Operate called; converted to string and assigned to str; rounded to 10th decimal if needed
+// Operate called; converted to string and assigned to str; rounded to 4th decimal if needed
 // Display updated with str
 // operatorIndex reset to 0
 function handleOperation() {
@@ -108,17 +108,11 @@ function handleOperation() {
     a = Number(tempArr.slice(0, operatorIndex).join(""));
     b = Number(tempArr.slice((operatorIndex + 1), tempArr.length).join(""));
 
-    
-    console.log("tempArr = " + tempArr);
-    console.log("operator = " + operator);
-    console.log("a = " + a);
-    console.log("b = " + b);
-    
-
     str = String(operate(a, b, operator));
 
+    // fix
     if (str.length > 10) {
-        str = parseFloat(str).toFixed(10)
+        str = parseFloat(str).toFixed(4)
     }
 
     handleDisplay();
@@ -131,12 +125,9 @@ function handleButtons() {
 
     // handle numbers & "." 
     numberButtons.forEach((element) => {
-        element.addEventListener("click", () => {
-            
+        element.addEventListener("click", () => {     
             str += element.textContent; 
             handleDisplay();
-
-            console.log(str);
         });
     });
     
@@ -159,8 +150,6 @@ function handleButtons() {
 
             // stores index of operator
             operatorIndex = str.length - 1;
-
-            console.log("operatorIndex = " + operatorIndex);
         });
     });
     
@@ -197,12 +186,10 @@ function handleButtons() {
     // str will be sliced to remove all characters after operator and replace with tempStr
     percentage.addEventListener("click", () => {
     
-        if (operatorIndex === 0) {
-            
+        if (operatorIndex === 0) { 
             str = String(Number(str / 100));
 
         } else {
-    
             tempStr = str
                         .split("")
                         .splice((operatorIndex + 1), (str.length - 1))
@@ -211,10 +198,9 @@ function handleButtons() {
             tempStr = String(Number(tempStr/ 100));
     
             str = str.slice(0, (operatorIndex + 1));
-    
+
             str += tempStr;
         }
-
         handleDisplay();
     });
 
@@ -235,7 +221,6 @@ function handleButtons() {
 
             } else {
                 str = str.substring(1, str.length);
-
             }
 
         } else {
@@ -250,7 +235,6 @@ function handleButtons() {
                 str = str.join(""); 
             }
         }
-
         handleDisplay();
     });
 
@@ -272,7 +256,6 @@ function handleButtons() {
                 str = str + ".";
             }
         }
-
         handleDisplay();
     });
 }
