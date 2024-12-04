@@ -59,7 +59,9 @@ button:hover {
 
 .operator,
 #clear,
-#back {
+#back, 
+#plusOrMinus, 
+#percentage {
     background-color: rgb(125, 125, 125);
 }
 
