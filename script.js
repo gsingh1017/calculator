@@ -4,7 +4,12 @@
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
-const divide = (a, b) => a / b;
+const divide = (a, b) => {
+    if (a === 0 || b == 0) {
+        return 0; 
+    }
+    return a / b;
+}
 
 const buttons = document.querySelectorAll("button");
 
@@ -15,6 +20,8 @@ const display = document.querySelector("#display");
 const equalSign = document.querySelector("#equalSign");
 const clear = document.querySelector("#clear");
 const backspace = document.querySelector("#back");
+const percentage = document.querySelector("#percentage");
+const plusOrMinus = document.querySelector("#plusOrMinus");
 
 
 // Initializer
@@ -23,6 +30,7 @@ let operatorIndex = 0;
 let a = null;
 let b = null;
 let tempArr = null;
+let tempStr = "";
 
 
 function resetCalculator() {
@@ -31,6 +39,7 @@ function resetCalculator() {
     a = null;
     b = null;
     tempArr = null;
+    tempStr = "";
     display.textContent = "0";
 }
 
@@ -84,14 +93,15 @@ function handleOperation() {
     a = Number(tempArr.slice(0, operatorIndex).join(""));
     b = Number(tempArr.slice((operatorIndex + 1), tempArr.length).join(""));
 
-    /*
+    
     console.log("tempArr = " + tempArr);
     console.log("operator = " + operator);
     console.log("a = " + a);
     console.log("b = " + b);
-    */
+    
 
     str = String(operate(a, b, operator));
+
     display.textContent = str;
     operatorIndex = 0;
 }
@@ -118,6 +128,7 @@ operatorButtons.forEach((element) => {
         str += element.textContent;
         display.textContent = str;
 
+        // stores index of operator
         operatorIndex = str.length - 1;
 
         console.log("operatorIndex = " + operatorIndex);
@@ -154,6 +165,34 @@ backspace.addEventListener("click", () => {
         display.textContent = str;
     }
 });
+
+
+// if an operator is present, tempStr will get str characters from operator to end of string length
+// tempStr will store new percentage string 
+// str will be sliced to remove all characters after operator and replace with tempStr
+// else percentage is calculated normally
+percentage.addEventListener("click", () => {
+
+    if (operatorIndex != 0) {
+
+        tempStr = str
+                    .split("")
+                    .splice((operatorIndex + 1), (str.length - 1))
+                    .join("");
+
+        tempStr = String(Number(tempStr/ 100));
+
+        str = str.slice(0, (operatorIndex + 1));
+
+        str += tempStr;
+        display.textContent = str;
+    } else {
+
+        str = String(Number(str / 100));
+        display.textContent = str;
+    }
+});
+
 
 
 displayInterface();
