@@ -53,7 +53,8 @@ button:hover {
 }
 
 
-.main {
+.main,
+#decimal {
     background-color: rgb(70, 70, 70);
 }
 
