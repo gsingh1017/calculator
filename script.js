@@ -83,7 +83,7 @@ function displayInterface() {
 // Operator equals string value at operatorIndex
 // variable a equals array left of operatorIndex, joined into string and converted to Number
 // variable b equals array right of operatorIndex, joined into string and converted to Number
-// Operate called and result is rounded to 10th decimal; converted to string and assigned to str
+// Operate called; converted to string and assigned to str; rounded to 10th decimal if needed
 // Display updated with str
 // operatorIndex reset to 0
 function handleOperation() {
@@ -101,7 +101,11 @@ function handleOperation() {
     console.log("b = " + b);
     
 
-    str = String(parseFloat(operate(a, b, operator)).toFixed(10));
+    str = String(operate(a, b, operator));
+
+    if (str.length > 10) {
+        str = parseFloat(str).toFixed(10)
+    }
 
     display.textContent = str;
     operatorIndex = 0;
