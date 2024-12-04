@@ -15,13 +15,14 @@ const buttons = document.querySelectorAll("button");
 
 const numberButtons = document.querySelectorAll(".main");
 const operatorButtons = document.querySelectorAll(".operator");
-
 const display = document.querySelector("#display");
+
 const equalSign = document.querySelector("#equalSign");
 const clear = document.querySelector("#clear");
 const backspace = document.querySelector("#back");
 const percentage = document.querySelector("#percentage");
 const plusOrMinus = document.querySelector("#plusOrMinus");
+const decimal = document.querySelector("#decimal");
 
 
 // Initializer
@@ -238,6 +239,27 @@ function handleButtons() {
         }
     });
 
+
+    // if operator is not present and if no decimal is present, 
+    // add decimal to str; decimal cannot be added again
+    // else if operator is present and if no decimal character is present after operator, 
+    // add decimal to str; decimal cannot be added again
+    decimal.addEventListener("click", () => {
+
+        if (operatorIndex === 0) {
+            if (str.indexOf(".") === -1) {
+                str = str + ".";
+                display.textContent = str;
+            }
+
+        } else {
+            tempStr = str.slice(operatorIndex, (str.length - 1));
+            if (tempStr.indexOf(".") === -1) {
+                str = str + ".";
+                display.textContent = str;
+            }
+        }
+    });
 }
 
 
